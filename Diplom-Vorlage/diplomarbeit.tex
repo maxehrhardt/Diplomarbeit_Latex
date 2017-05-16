@@ -1,0 +1,27 @@
+
+\documentclass[
+a4paper,                    % A4-Format
+fontsize=12pt,              % Schriftgröße 12
+headings=openright,         % Kapitelüberschriften bei zweiseitigem Stil nur auf rechte Seiten
+bibliography=totocnumbered, % Literaturverzeichnis nummerieren und ins Inhaltsverzeichnis
+twoside=off,                % zweiseitiger Stil on/off
+draft=false,                % Entwurfsmodus true/false
+titlepage=true,             % Titelseite true/false
+headsepline                 % Trennlinie am Seitenkopf
+]{scrbook}
+
+\input{Reserviert/header}   % Nicht editieren
+
+\begin{document}
+
+%\input{Reserviert/anfang}   % Nicht editieren
+
+%\include{Inhalt/einleitung} % Einleitung der Arbeit
+
+%\include{Inhalt/kapitel1}   % Das erste Kapitel
+
+\include{Inhalt/stand_der_technik}
+
+%\input{Reserviert/ende}     % Nicht editieren
+
+\end{document}

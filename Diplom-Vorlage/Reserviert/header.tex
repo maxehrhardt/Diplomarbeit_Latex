@@ -1,0 +1,68 @@
+
+% Schriftart und Zeichendarstellung
+\usepackage[utf8]{inputenc}     % Unterstützung für Umlaute
+\usepackage[T1]{fontenc}        % Schriftartpaket
+\usepackage[ngerman]{babel}     % Neue Rechtschreibung
+
+
+%% Layout
+% Seitenlayout mit geometry
+\usepackage{geometry}
+\geometry{left=2.5cm,right=2.5cm,bottom=2.5cm,top=2.5cm}
+\parindent 0pt % keine Absatzeinrückung
+% Kopf- und Fußzeile
+\usepackage[automark,headsepline]{scrpage2}
+\clearscrheadings
+\clearscrplain
+\ohead{\headmark}
+\ifoot{\tiny\nummer}
+\ofoot{\pagemark}
+\setheadsepline{.4pt} % Linie unter dem Head
+\headheight 18pt
+% Anderthalbzeilig
+
+% Symbole
+\usepackage{textcomp}           % Mathematische Symbole für den Textmodus
+\usepackage{amsfonts}
+\usepackage{amssymb}            % Fraktur, doppeltgestrichene Buchstaben
+\usepackage[intlimits]{amsmath} % Integralgrenzen werden über und unter das Integral geschrieben
+\usepackage{upgreek}            % aufrechte griechische Buchstaben
+\usepackage{sistyle}            % für Einheiten
+\SIstyle{German}                % Komma statt Punkt als Dezimaltrennzeichen
+
+%\mathindent15mm                 % Linksbündige Formeln
+
+% Grafikpakete
+\usepackage[pdftex]{graphicx}   % .pdf, .png, .jpg können direkt in pdftex verwendet werden
+\usepackage{rotating}           % Text und Bilder drehen
+
+
+% Abschnittsnummern in Zahlen einbeziehen
+\numberwithin{table}{chapter}
+\numberwithin{figure}{chapter}
+\numberwithin{equation}{chapter}
+
+% komplexe Matrix- bzw. Vektorschreibweise
+\newcommand{\KVM}[1]{\underline{\boldsymbol{#1}}} % komplexer Vektor oder Matrix
+\newcommand{\VM}[1]{\boldsymbol{#1}}              % Vektor oder Matrix
+\newcommand{\K}[1]{\underline{#1}}                % komplexe Notation
+\newcommand{\bez}[1]{\mathrm{#1}}                 % Bezeichner als Index
+\newcommand{\imag}{\mathrm{j}}                    % imaginäre Einheit
+
+% Für einen Paragraph mit Text in der nächsten Zeile
+\makeatletter
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+  {-3.25ex\@plus -1ex \@minus -.2ex}%
+  {1.5ex \@plus .2ex}%
+  {\normalfont\normalsize\bfseries}}
+\makeatother
+
+% Abschluss
+\input{Reserviert/titel_angaben}
+
+% Angabe von URL-Links
+\usepackage{hyperref}
+
+%Erstellung von Bildern
+\usepackage{pgf}
+\usepackage{tikz}

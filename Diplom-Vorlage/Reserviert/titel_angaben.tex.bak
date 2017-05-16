@@ -1,0 +1,29 @@
+% Name des Instituts
+\newcommand{\institut}{Institut für Elektrische Energieversorgung und Hochspannungstechnik}
+
+% Thema der Arbeit
+\newcommand{\thema}{Thema der Arbeit}
+
+% Nummer der Arbeit
+\newcommand{\nummer}{DA~7/2022}
+
+% Vorname des Bearbeiters (du)
+\newcommand{\vorname}{Max}
+
+% Nachname des Bearbeiters
+\newcommand{\nachname}{Mustermann}
+
+% Geburtsdatum des Bearbeiters
+\newcommand{\geburtsdatum}{11.11.1989}
+
+% Geburtsort des Bearbeiters
+\newcommand{\geburtsort}{Musterstadt}
+
+% Titel und Name des Betreuers
+\newcommand{\betreuer}{Dipl.-Ing. Bertram Betreuer}
+
+% Titel und Name des verantw. Hochschullehrers
+\newcommand{\hslehrer}{Prof. Dr.-Ing. P. Schegner}
+
+% Datum der Einreichung
+\newcommand{\einreichung}{\today}
