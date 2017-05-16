@@ -6,7 +6,7 @@ Es wurde bereits ein Laser-Doppler-Velocimetry-Messsystem (LDV) aufgebaut, bei d
 \section{Wellenfrontkorrektursysteme}
 In der Lasermesstechnik kann es durch verschiedenste Einflussfaktoren zu ungewollten Verzerrung der Wellenfront kommen, die erheblich die Messunsicherheit erhöhen bzw. eine Messung ganz verhindern können. Bei der Wellenfrontkorrektur werden eben diese Verzerrungen über einen Sensor vermessen und mittels eines Regelkreises und einer adaptiven Optik korrigiert. Abb. zeigt einen möglichen Aufbau eines solchen Systems und verdeutlicht den Wellenverlauf.
 
-\section{Particle Image Velocimetry}  
+\section{Particle Image Velocimetry (PIV)}  
 PIV ist ein berührungsloses optisches Verfahren zur Bestimmung von Geschwindigkeitsfeldern. Mithilfe von 2 in festem Zeitabstand aufgenommenen Bildern, wird der Versatz der Partikel bestimmt. Über den Quotient aus Positionsversatz und Zeitdifferenz zwischen den Bildern, kann auf die Geschwindigkeit geschlossen werden.
 
 \begin{center}
@@ -37,4 +37,32 @@ PIV ist ein berührungsloses optisches Verfahren zur Bestimmung von Geschwindigk
 	\end{tikzpicture}
 \end{center}
 
+\section{Regelung von Wellenfrontkorrektursystemen}
 
+
+\tikzstyle{block} = [draw, fill=blue!20, rectangle, minimum height=3em, minimum width=6em]
+\tikzstyle{sum} = [draw, fill=blue!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+
+\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+		% We start by placing the blocks
+    \node [input, name=input] {};
+    \node [sum, right of=input] (sum) {};
+    \node [block, right of=sum] (regler) {Regler};
+    \node [block, right of=regler, pin={[pinstyle]above:Störungen},
+            node distance=3cm] (regelstrecke) {Regelstrecke};
+    % We draw an edge between the controller and system block to 
+    % calculate the coordinate u. We need it to place the measurement block. 
+    \draw [->] (regler) -- node[name=u] {$u$} (regelstrecke);
+    \node [output, right of=regelstrecke] (output) {};
+    \node [block, below of=u] (messglied) {Messglied};
+
+    % Once the nodes are placed, connecting them is easy. 
+    \draw [draw,->] (input) -- node {$r$} (sum);
+    \draw [->] (sum) -- node {$e$} (regler);
+    \draw [->] (regelstrecke) -- node [name=y] {$y$}(output);
+    \draw [->] (y) |- (messglied);
+    \draw [->] (messglied) -| node[pos=0.99] {$-$} node [near end] {$y_m$} (sum);
+\end{tikzpicture}
