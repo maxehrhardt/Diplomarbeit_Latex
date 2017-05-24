@@ -45,24 +45,71 @@ PIV ist ein berührungsloses optisches Verfahren zur Bestimmung von Geschwindigk
 \tikzstyle{input} = [coordinate]
 \tikzstyle{output} = [coordinate]
 \tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\begin{center}	
+	\begin{tikzpicture}[auto, node distance=2cm,>=latex']
+			% We start by placing the blocks
+			\node [input, name=input] {};
+			\node [sum, right of=input] (sum) {};
+			\node [block, right of=sum] (regler) {Regler};
+			\node [block, right of=regler, pin={[pinstyle]above:Störungen},
+							node distance=3cm] (regelstrecke) {Regelstrecke};
+			% We draw an edge between the controller and system block to 
+			% calculate the coordinate u. We need it to place the measurement block. 
+			\draw [->] (regler) -- node[name=u] {$u$} (regelstrecke);
+			\node [output, right of=regelstrecke] (output) {};
+			\node [block, below of=u] (messglied) {Messglied};
 
-\begin{tikzpicture}[auto, node distance=2cm,>=latex']
-		% We start by placing the blocks
-    \node [input, name=input] {};
-    \node [sum, right of=input] (sum) {};
-    \node [block, right of=sum] (regler) {Regler};
-    \node [block, right of=regler, pin={[pinstyle]above:Störungen},
-            node distance=3cm] (regelstrecke) {Regelstrecke};
-    % We draw an edge between the controller and system block to 
-    % calculate the coordinate u. We need it to place the measurement block. 
-    \draw [->] (regler) -- node[name=u] {$u$} (regelstrecke);
-    \node [output, right of=regelstrecke] (output) {};
-    \node [block, below of=u] (messglied) {Messglied};
+			% Once the nodes are placed, connecting them is easy. 
+			\draw [draw,->] (input) -- node {$r$} (sum);
+			\draw [->] (sum) -- node {$e$} (regler);
+			\draw [->] (regelstrecke) -- node [name=y]{$y$}(output);
+			\draw [{Circle}->,shorten <=-2pt] (y) |- (messglied);
+			\draw [->] (messglied) -| node[pos=0.99] {$-$} node [near end] {$y_m$} (sum);
+			
+			\node[right of=output,align=left] 
+			{$r$...Führungsgröße\\
+			 $e$...Regelabweichung\\
+			 $u$...Stellgröße\\
+			 $y$...Regelgröße\\
+			 $y_m$...Messgröße\\
+			 };
+	\end{tikzpicture}
+\end{center}
 
-    % Once the nodes are placed, connecting them is easy. 
-    \draw [draw,->] (input) -- node {$r$} (sum);
-    \draw [->] (sum) -- node {$e$} (regler);
-    \draw [->] (regelstrecke) -- node [name=y] {$y$}(output);
-    \draw [->] (y) |- (messglied);
-    \draw [->] (messglied) -| node[pos=0.99] {$-$} node [near end] {$y_m$} (sum);
-\end{tikzpicture}
+\tikzstyle{block} = [draw, fill=blue!20, rectangle, minimum height=3em, minimum width=6em]
+\tikzstyle{sum} = [draw, fill=blue!20, circle, node distance=1cm]
+\tikzstyle{input} = [coordinate]
+\tikzstyle{output} = [coordinate]
+\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+\begin{center}	
+	\begin{tikzpicture}[auto, node distance=1cm,>=latex']
+			% We start by placing the blocks
+			\node [input, name=input] {};
+			\node [sum, right =of input] (sum) {};
+			\node [block, right =of sum] (matrix) {Entkoppelmatrix};
+			\node [block, right =of matrix] (regler) {Regler};
+			\node [block, right =of regler] (regelstrecke) {Adaptiver Spiegel};
+			% We draw an edge between the controller and system block to 
+			% calculate the coordinate u. We need it to place the measurement block. 
+			\draw [->] (regler) -- node[name=u] {$u$} (regelstrecke);
+			\node [output, right =of regelstrecke] (output) {};
+			\node [block, below= of regler] (messglied) {HS-Kamera};
+
+			% Once the nodes are placed, connecting them is easy. 
+			\draw [draw,->] (input) -- node[align=center,yshift=0.5cm]{Brennflecke\\ Soll-Positionen} (sum);
+			\draw [->] (sum) -- node {$e$} (matrix);
+			\draw [->] (matrix) --(regler);
+			\draw [->] (regler) -- (regelstrecke);
+			\draw [->] (regelstrecke) -- node [name=y]{$y$}(output);
+			\draw [{Circle}->,shorten <=-2pt] (y) |- (messglied);
+			\draw [->] (messglied) -| node[pos=0.99] {$-$} node [near end] {$y_m$} (sum);
+			
+			\node[right of=output,align=left] 
+			{$r$...Führungsgröße\\
+			 $e$...Regelabweichung\\
+			 $u$...Stellgröße\\
+			 $y$...Regelgröße\\
+			 $y_m$...Messgröße\\
+			 };
+	\end{tikzpicture}
+\end{center}
