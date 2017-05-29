@@ -51,20 +51,23 @@ PIV ist ein berührungsloses optisches Verfahren zur Bestimmung von Geschwindigk
 			\node [input, name=input] {};
 			\node [sum, right of=input] (sum) {};
 			\node [block, right of=sum] (regler) {Regler};
-			\node [block, right of=regler, pin={[pinstyle]above:Störungen},
-							node distance=3cm] (regelstrecke) {Regelstrecke};
+			\node [block, right of=regler,node distance=3cm] (regelstrecke) {Regelstrecke};
+			\node [sum, right of=regelstrecke,node distance=2cm] (sum2) {};
+			\node [name=störung, above of=sum2, node distance=1cm]{Störung};
 			% We draw an edge between the controller and system block to 
 			% calculate the coordinate u. We need it to place the measurement block. 
 			\draw [->] (regler) -- node[name=u] {$u$} (regelstrecke);
-			\node [output, right of=regelstrecke] (output) {};
+			\node [output, right of=sum2] (output) {};
 			\node [block, below of=u] (messglied) {Messglied};
 
-			% Once the nodes are placed, connecting them is easy. 
-			\draw [draw,->] (input) -- node {$r$} (sum);
+			% Once the nodes are placed, connecting them is easy. 			
+			\draw [draw,->] (input) -- (sum);
 			\draw [->] (sum) -- node {$e$} (regler);
-			\draw [->] (regelstrecke) -- node [name=y]{$y$}(output);
+			\draw [->] (regelstrecke) --(sum2);
+			\draw [->] (sum2) -- node [name=y]{$y$}(output);
 			\draw [{Circle}->,shorten <=-2pt] (y) |- (messglied);
 			\draw [->] (messglied) -| node[pos=0.99] {$-$} node [near end] {$y_m$} (sum);
+			\draw [draw,->](störung) -- node[pos=0.5,left] {$+$}(sum2);
 			
 			\node[right of=output,align=left] 
 			{$r$...Führungsgröße\\
@@ -89,27 +92,33 @@ PIV ist ein berührungsloses optisches Verfahren zur Bestimmung von Geschwindigk
 			\node [block, right =of sum] (matrix) {Entkoppelmatrix};
 			\node [block, right =of matrix] (regler) {Regler};
 			\node [block, right =of regler] (regelstrecke) {Adaptiver Spiegel};
+			\node [sum, right =of regelstrecke] (sum2){};
+			\node [name=störung, above of=sum2, node distance=1cm]{Störung};
 			% We draw an edge between the controller and system block to 
 			% calculate the coordinate u. We need it to place the measurement block. 
-			\draw [->] (regler) -- node[name=u] {$u$} (regelstrecke);
-			\node [output, right =of regelstrecke] (output) {};
+			\draw [->] (regler) -- node[name=u] {$\bar{u}$} (regelstrecke);
+			\node [output, right =of sum2] (output) {};
 			\node [block, below= of regler] (messglied) {HS-Kamera};
 
 			% Once the nodes are placed, connecting them is easy. 
-			\draw [draw,->] (input) -- node[align=center,yshift=0.5cm]{Brennflecke\\ Soll-Positionen} (sum);
-			\draw [->] (sum) -- node {$e$} (matrix);
-			\draw [->] (matrix) --(regler);
+			\draw [draw,->] (input) -- node{$\bar{r}$} (sum);
+			\draw [->] (sum) -- node {$\bar{e}_n$} (matrix);
+			\draw [->] (matrix) -- node{$\bar{e}_k$}(regler);
 			\draw [->] (regler) -- (regelstrecke);
-			\draw [->] (regelstrecke) -- node [name=y]{$y$}(output);
+			\draw [->] (regelstrecke) --(sum2);
+			\draw [->] (sum2) -- node [name=y]{$\bar{y}$}(output);
 			\draw [{Circle}->,shorten <=-2pt] (y) |- (messglied);
-			\draw [->] (messglied) -| node[pos=0.99] {$-$} node [near end] {$y_m$} (sum);
-			
-			\node[right of=output,align=left] 
-			{$r$...Führungsgröße\\
-			 $e$...Regelabweichung\\
-			 $u$...Stellgröße\\
-			 $y$...Regelgröße\\
-			 $y_m$...Messgröße\\
-			 };
+			\draw [->] (messglied) -| node[pos=0.99] {$-$} node [near end] {$\bar{y}_m$} (sum);
+			\draw [draw,->](störung) -- node[pos=0.5,left] {$+$}(sum2);
 	\end{tikzpicture}
+	
+	\begin{tabular}{llc}
+		\textbf{Name} & \textbf{Bedeutung} & \textbf{Vektorgröße}\\
+		$\bar{r}$ & Soll-Positionen der N Brennflecke (x und y) & 2*N\\
+		$\bar{e}_n$ & Positionsabweichung der N Brennflecke (x und y) & 2*N\\
+		$\bar{e}_k$ & Abweichungen der k Aktorfreiheitsgrade & k\\
+		$\bar{u}$ & Stellsignale für k Aktoren & k\\
+		$\bar{y}_m$ & Ist-Positionen der N Brennflecke (x und y) & 2*N\\
+		$\bar{y}$ & Kontinuierliche Wellenfront & -\\
+	\end{tabular}
 \end{center}
